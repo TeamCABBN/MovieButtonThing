@@ -87,14 +87,16 @@
           }).then(function (response) {
 
             console.log(response);
-            
+            if(!response.response){
+              return;
+            }
             let displayHTML = `<div class="row">
               <div class="col-5">
                 <img src="${response.Poster}">
               </div>             
               <div class="col-5"> 
                 <h1>${response.Title} (${response.Year}) (${response.Rated})</h1>
-                <h4>${response.Actors}</h4>
+                <h5>${response.Actors}</h5>
                 <p>${response.Plot}</p>
                 <h2>${response.Runtime}</h2>
               </div>
