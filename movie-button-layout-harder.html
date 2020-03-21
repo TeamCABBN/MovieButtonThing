@@ -87,39 +87,38 @@
           }).then(function (response) {
 
             console.log(response);
-            if(!response.response){
-              return;
+            if (response.Response == "False") {
+
+            } else {
+
+              let displayHTML = `<div class="row">
+                <div class="col-5">
+                  <img src="${response.Poster}">
+                </div>             
+                <div class="col-5"> 
+                  <h1>${response.Title} (${response.Year}) (${response.Rated})</h1>
+                  <h5>${response.Actors}</h5>
+                  <p>${response.Plot}</p>
+                  <h2>${response.Runtime}</h2>
+                </div>
+                </div>
+                `;
+
+
+              let currentHtml = movieOutput.innerHTML;
+
+              currentHtml = displayHTML + currentHtml;
+
+              movieOutput.innerHTML = currentHtml;
             }
-            let displayHTML = `<div class="row">
-              <div class="col-5">
-                <img src="${response.Poster}">
-              </div>             
-              <div class="col-5"> 
-                <h1>${response.Title} (${response.Year}) (${response.Rated})</h1>
-                <h5>${response.Actors}</h5>
-                <p>${response.Plot}</p>
-                <h2>${response.Runtime}</h2>
-              </div>
-              </div>
-              `;
 
-            
-
-
-            let currentHtml = movieOutput.innerHTML;
-
-            currentHtml = displayHTML + currentHtml;
-
-            movieOutput.innerHTML = currentHtml;
-            
-            
 
           });
-          
+
         }
 
 
-        
+
         // Calling the renderButtons function to display the initial list of movies
       </script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -187,4 +186,3 @@ Website: "N/A"
 Response: "True"
 
  -->
-
