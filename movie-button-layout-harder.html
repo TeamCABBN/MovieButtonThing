@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Favorite Movies</title>
+    <style type="text/css">
+      button,
+      div,
+      form,
+      input {
+        margin: 10px;
+      }
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  </head>
+
+  <body>
+
+    <div class="container">
+      <h1>Movie Search</h1>
+
+      <!-- Movies will get dumped here -->
+      <div id="buttons-view"></div>
+
+      <form id="movie-form">
+        <label for="movie-input">Add a Movie, Yo!</label>
+        <input type="text" id="movie-input"><br>
+
+        <!-- Button triggers new movie to be added -->
+        <input id="add-movie" type="submit" value="Add a Movie, Yo!">
+        <div class="movie-output">
+
+        </div>
+      </form>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script type="text/javascript">
+        // Initial array of movies
+        var movies = ["The Matrix", "The Notebook", "Mr. Nobody", "The Lion King"];
+
+        let movieOutput = document.querySelector(".movie-output");
+
+        // Function for displaying movie data
+
+        // YOUR CODE GOES HERE
+
+        // This function handles events where one button is clicked
+        $("#add-movie").on("click", function (event) {
+
+          event.preventDefault();
+
+          movies.push($("#movie-input").val());
+
+          console.log(movies);
+
+          console.log(event);
+
+          for (var i = 0; i < movies.length; i++) {
+
+            var movieBtn = $(`<button class="btn btn-primary m-1 movie-query-buttons">${movies[i]}</button>`);
+
+            movieBtn.on("click", queryMovie);
+
+            $("#buttons-view").append(movieBtn);
+
+            console.log(movieBtn);
+          }
+
+          movies = [];  // clears array
+
+        });
+
+        const queryMovie = (event) => {
+
+          console.log(event);
+
+          let movieName = event.currentTarget.innerText;
+
+          queryURL = "https://www.omdbapi.com/?t=" + movieName + "&apikey=trilogy";
+
+          console.log(queryURL);
+
+          $.ajax({
+            url: queryURL,
+            method: "GET"
+          }).then(function (response) {
+
+            console.log(response);
+            
+            let displayHTML = `<div class="row">
+              <div class="col-5">
+                <img src="${response.Poster}">
+              </div>             
+              <div class="col-5"> 
+                <h1>${response.Title} (${response.Year}) (${response.Rated})</h1>
+                <h4>${response.Actors}</h4>
+                <p>${response.Plot}</p>
+                <h2>${response.Runtime}</h2>
+              </div>
+              </div>
+              `;
+
+            
+
+
+            let currentHtml = movieOutput.innerHTML;
+
+            currentHtml = displayHTML + currentHtml;
+
+            movieOutput.innerHTML = currentHtml;
+            
+            
+
+          });
+          
+        }
+
+
+        
+        // Calling the renderButtons function to display the initial list of movies
+      </script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    </div>
+  </body>
+
+</html>
+<!-- 
+
+  # Movie Button Layout
+
+## File
+
+* [`movie-button-layout-easier`](Unsolved/movie-button-layout-easier.html) or [`movie-button-layout-harder`](Unsolved/movie-button-layout-harder.html)
+
+## Instruction
+
+* Using either `movie-button-layout-easier.html` or `movie-button-layout-harder.html` as a starting-point, replicate the functionality of the application just demonstrated to you.
+
+* Your final code should:
+
+  * Dynamically generate the initial buttons using jQuery
+
+  * Allow users to create new buttons upon entering text in the textbox and clicking `Add a Movie Yo`.
+
+  * If you finish early, begin reading about [HTML5 `data-*` attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) and how (and why) you would add them to dynamically generated elements with the [jQuery `.attr()` method](http://api.jquery.com/attr/).
+
+
+
+
+        ==PSUEDO CODE==
+
+      --When the 'add a movie you' button clicked'
+      
+{Title: "The Matrix", Year: "1999", Rated: "R", Released: "31 Mar 1999", Runtime: "136 min", …}
+Title: "The Matrix"
+Year: "1999"
+Rated: "R"
+Released: "31 Mar 1999"
+Runtime: "136 min"
+Genre: "Action, Sci-Fi"
+Director: "Lana Wachowski, Lilly Wachowski"
+Writer: "Lilly Wachowski, Lana Wachowski"
+Actors: "Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss, Hugo Weaving"
+Plot: "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers."
+Language: "English"
+Country: "USA"
+Awards: "Won 4 Oscars. Another 37 wins & 50 nominations."
+Poster: "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg"
+Ratings: (3) [{…}, {…}, {…}]
+Metascore: "73"
+imdbRating: "8.7"
+imdbVotes: "1,584,862"
+imdbID: "tt0133093"
+Type: "movie"
+DVD: "21 Sep 1999"
+BoxOffice: "N/A"
+Production: "Warner Bros. Pictures"
+Website: "N/A"
+Response: "True"
+
+ -->
+
